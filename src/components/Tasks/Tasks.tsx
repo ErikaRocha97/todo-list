@@ -46,10 +46,15 @@ export const Tasks: React.FC = () => {
     // ! Adicionar tarefa na lista e salvar no array sem usar .push
 
     setTasks([
-      ...tasks, // pegar o que está no array tasks e adicionar no array novo.
+      ...tasks,
+      // pegar o que está no array tasks e adicionar no array novo.
       // nova tarefa (ctrl+espaço)
-      { id: 1, title: taskTitle, done: false },
+      // adicionar ID de forma dinâmica:
+      // new Date().getTime() -> retorna data e horário exato. Não se repete.
+      { id: new Date().getTime(), title: taskTitle, done: false },
     ]);
+    // Limpar o input após adicionar tarefa
+    setTaskTitle("");
 
     // ? Como exibir o estado Tasks no HTML
     // Fazer um for renderizando cada tarefa.
@@ -72,7 +77,7 @@ export const Tasks: React.FC = () => {
 
         {/* ao pressionar o botão ou pressionar enter, quero pegar o conteúdo do input */}
         {/* ação padrão do submit é recarregar a página */}
-        {/* para tirar o comportamento padrão, preciso alterar o onSubmit do form com preventDEfault() */}
+        {/* para tirar o comportamento padrão, preciso alterar o onSubmit do form com preventDefault() */}
         <button type="submit">Adicionar tarefa</button>
       </form>
       {/* Lista de tarefas */}
@@ -81,8 +86,9 @@ export const Tasks: React.FC = () => {
         {/* Renderização multipla (de array): usa map() para retornar HTML */}
         {/* para cada tarefa do array, retornar uma <li> */}
         {tasks.map((task) => {
+          // No map, precisa passar um parametro ÚNICO "key" no primeiro elemento.
           return (
-            <li>
+            <li key={task.id}>
               <input type="checkbox" name="" id={`task-${task.id}`} />
               <label htmlFor={`task-${task.id}`}>{task.title}</label>
             </li>
